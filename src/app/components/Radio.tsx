@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MagnifyingGlassIcon, MapPinIcon, MusicalNoteIcon, HeartIcon, UsersIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, MapPinIcon, PlayIcon, PauseIcon } from '@heroicons/react/24/outline'
 
 interface RadioStation {
   radioId: string
@@ -117,9 +117,9 @@ const Radio = () => {
   }, [])
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-8">
+    <main className="max-w-3xl mx-auto px-4 py-8">
       {/* Header */}
-      <header className="mb-8 border-b pb-6">
+      <header className="mb-12 border-b pb-6">
         <h1 className="text-2xl font-normal mb-2">MyLinks Radio</h1>
         <p className="text-sm text-neutral-600">
           Streaming Radio Indonesia
@@ -128,7 +128,7 @@ const Radio = () => {
 
       {/* Search and Filter */}
       <section className="mb-8">
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
@@ -137,19 +137,19 @@ const Radio = () => {
                 placeholder="Cari radio..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border focus:outline-none"
               />
-              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+              <MagnifyingGlassIcon className="w-5 h-5 text-neutral-400 absolute left-3 top-2.5" />
             </div>
           </div>
 
           {/* City Filter */}
-          <div className="sm:w-64">
+          <div className="sm:w-48">
             <div className="relative">
               <select
                 value={selectedCity}
                 onChange={(e) => handleCityChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border appearance-none focus:outline-none"
               >
                 <option value="">Semua Kota</option>
                 {cities.map((city) => (
@@ -158,7 +158,7 @@ const Radio = () => {
                   </option>
                 ))}
               </select>
-              <MapPinIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+              <MapPinIcon className="w-5 h-5 text-neutral-400 absolute left-3 top-2.5" />
             </div>
           </div>
         </div>
@@ -167,31 +167,29 @@ const Radio = () => {
       {/* Main Player */}
       {selectedStation && (
         <section className="mb-8">
-          <div className="border rounded-lg overflow-hidden">
-            <div className="p-4 bg-gray-50 border-b">
-              <div className="flex items-center gap-4">
+          <div className="border">
+            <div className="p-4 border-b">
+              <div className="flex items-start gap-4">
                 <img 
                   src={selectedStation.logo} 
                   alt={selectedStation.name}
-                  className="w-16 h-16 rounded-lg object-cover"
+                  className="w-16 h-16 object-cover"
                 />
-                <div className="flex-1">
-                  <h2 className="font-medium">{selectedStation.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">{selectedStation.currentTrack}</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-medium text-base truncate">{selectedStation.name}</h2>
+                  <p className="text-sm text-neutral-600 mt-1 truncate">{selectedStation.currentTrack}</p>
                   <div className="flex items-center gap-4 mt-2">
-                    <span className="flex items-center text-sm text-gray-500">
-                      <UsersIcon className="w-4 h-4 mr-1" />
+                    <span className="text-xs text-neutral-600">
                       {selectedStation.listeners} pendengar
                     </span>
-                    <span className="flex items-center text-sm text-gray-500">
-                      <HeartIcon className="w-4 h-4 mr-1" />
+                    <span className="text-xs text-neutral-600">
                       {selectedStation.like} suka
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={() => setAudioPlaying(!audioPlaying)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="px-4 py-2 border hover:bg-neutral-50 transition-colors"
                 >
                   {audioPlaying ? 'Pause' : 'Play'}
                 </button>
@@ -212,14 +210,14 @@ const Radio = () => {
       )}
 
       {/* Station List */}
-      <section>
+      <section className="mb-8">
         <h2 className="text-lg font-normal mb-4">Daftar Radio</h2>
         {loading ? (
           <div className="text-center py-8">
-            <p>Memuat...</p>
+            <p className="text-sm text-neutral-600">Memuat...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {stations.map((station) => (
               <button
                 key={station.radioId}
@@ -227,20 +225,20 @@ const Radio = () => {
                   setSelectedStation(station)
                   setAudioPlaying(false)
                 }}
-                className={`flex items-center gap-3 p-3 border rounded-lg transition-colors ${
-                  selectedStation?.radioId === station.radioId
-                    ? 'bg-gray-50 border-gray-300'
-                    : 'hover:bg-gray-50'
+                className={`flex items-center gap-3 p-3 border transition-colors ${
+                  selectedStation?.radioId === station.radioId 
+                    ? 'bg-neutral-50' 
+                    : 'hover:bg-neutral-50'
                 }`}
               >
                 <img 
                   src={station.logo} 
                   alt={station.name}
-                  className="w-12 h-12 rounded object-cover"
+                  className="w-12 h-12 object-cover"
                 />
-                <div className="flex-1 text-left">
-                  <h3 className="font-medium text-sm">{station.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1 truncate">
+                <div className="flex-1 min-w-0 text-left">
+                  <h3 className="text-sm font-medium truncate">{station.name}</h3>
+                  <p className="text-xs text-neutral-600 mt-0.5 truncate">
                     {station.currentTrack}
                   </p>
                 </div>
@@ -251,7 +249,7 @@ const Radio = () => {
       </section>
 
       {/* Disclaimer */}
-      <section className="mt-12 border-t pt-6">
+      <section className="border-t pt-6">
         <div className="text-xs text-neutral-600">
           <p>⚠️ Catatan:</p>
           <ul className="list-disc pl-4 mt-2 space-y-1">
